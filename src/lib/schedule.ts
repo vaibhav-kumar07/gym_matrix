@@ -77,11 +77,11 @@ export async function getScheduleData(): Promise<IScheduleData> {
     }
 
     // In production, make actual API call
-    const response = await fetch("/api/member/schedule");
-    if (!response.ok) {
-      throw new Error("Failed to fetch schedule data");
-    }
-    return await response.json();
+    // const response = await fetch("/api/member/schedule");
+    // if (!response.ok) {
+    //   throw new Error("Failed to fetch schedule data");
+    // }
+    return demoScheduleData;
   } catch (error) {
     console.error("Error fetching schedule data:", error);
     throw error;
