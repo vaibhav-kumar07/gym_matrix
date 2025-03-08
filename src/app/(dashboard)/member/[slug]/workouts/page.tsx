@@ -5,24 +5,33 @@ import { fetchWorkouts } from "@/lib/workout";
 import { Suspense } from "react";
 
 interface WorkoutsPageProps {
-  searchParams: {
+  searchParams: Promise<{
     filter?: WorkoutFilter;
     duration?: string;
     intensity?: string;
-    level?: string;
-  };
+    goals?: string;
+    equipment?: string;
+  }>;
 }
 
 export default async function WorkoutsPage({
   searchParams,
 }: WorkoutsPageProps) {
-  const filter = (searchParams.filter as WorkoutFilter) || "recommended";
+  const { filter, duration, intensity, goals, equipment } = await searchParams;
 
   // Fetch workouts with all search params
-  const workouts = await fetchWorkouts(filter, searchParams);
+  const workouts = await fetchWorkouts(filter, {
+    duration,
+    intensity,
+    goals,
+    equipment,
+  });
   return (
     <Suspense fallback={<WorkoutsSkeleton />}>
-      <WorkoutLibrary initialWorkouts={workouts} searchParams={searchParams} />
+      <WorkoutLibrary
+        initialWorkouts={workouts}
+        searchParams={{ filter, duration, intensity, goals, equipment }}
+      />
     </Suspense>
   );
 }

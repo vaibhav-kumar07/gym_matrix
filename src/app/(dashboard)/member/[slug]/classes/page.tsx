@@ -1,7 +1,6 @@
 import { MemberClassList } from "@/components/classes/member/MemberClassList";
-import { MemberClassSkeleton } from "@/components/classes/member/MemberClassSkeleton";
 import { fetchClasses } from "@/lib/classes";
-import type { ClassFilter, FitnessClass } from "@/lib/types/classes";
+import type { ClassFilter } from "@/lib/types/classes";
 
 interface ClassesPageProps {
   searchParams: Promise<{
@@ -24,13 +23,11 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
-      {/* <Suspense fallback={<MemberClassSkeleton />}> */}
       <MemberClassList
         initialClasses={classes}
         filters={{ filter: defaultFilter, level: defaultLevel }}
         searchParams={{ search }}
       />
-      {/* </Suspense> */}
     </div>
   );
 }
