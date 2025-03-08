@@ -165,11 +165,11 @@ export async function getMemberDashboard(): Promise<IMemberDashboard> {
     }
 
     // In production, make actual API call
-    const response = await fetch("/api/member/dashboard");
-    if (!response.ok) {
-      throw new Error("Failed to fetch dashboard data");
-    }
-    return await mockDashboardData;
+    // const response = await fetch("/api/member/dashboard");
+    // if (!response.ok) {
+    //   throw new Error("Failed to fetch dashboard data");
+    // }
+    return mockDashboardData;
   } catch (error) {
     console.error("Error fetching dashboard:", error);
     throw error;
