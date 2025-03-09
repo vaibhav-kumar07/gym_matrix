@@ -1,39 +1,35 @@
 "use client";
 
+import SkeletonCard from "../common/SkeletonCard";
 import ClassStatCard from "./ClassStatCard";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchStats = async () => {
+  const res = await fetch("http://localhost:3000/owner/bulls/classes/api");
+  if (!res.ok) throw new Error("Failed to fetch stats");
+  return res.json();
+};
 
 export default function ClassStatCardList() {
-    const [stats, setStats] = useState<{ title: string; value: string }[]>([]);
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ["stats"],
+    queryFn: fetchStats,
+    refetchInterval: 10000,
+  });
 
-    useEffect(() => {
-        const fetchStats = async () => {
-            try {
-                const response = await fetch(
-                    "http://localhost:3000/owner/bulls/classes/api",
-                );
-                const rawData = await response.json();
-                setStats(rawData); // Correctly setting state
-            } catch (error) {
-                console.error("Failed to fetch stats:", error);
-            }
-        };
-
-        fetchStats();
-        const interval = setInterval(fetchStats, 10000); // Fetch every second
-
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-        <div className="grid grid-cols-4 gap-6 mb-8">
-            {stats.map((stat, index) => (
-                <ClassStatCard
-                    key={index}
-                    title={stat.title}
-                    value={stat.value}
-                />
-            ))}
-        </div>
-    );
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {isLoading
+        ? Array(4)
+            .fill(null)
+            .map((_, i) => <SkeletonCard key={i} />)
+        : stats?.map((stat) => (
+            <ClassStatCard
+              key={stat.title}
+              title={stat.title}
+              value={stat.value}
+            />
+          ))}
+    </div>
+  );
 }

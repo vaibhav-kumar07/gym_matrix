@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../../../globals.css";
+import ReactQueryProvider from "@/components/Providers/ReactQueryProviders";
 import { ToastProvider } from "@/components/hooks/use-toast";
 import OwnerNavbar from "@/components/navbar/owner/OwnerNavbar";
 import Sidebar from "@/components/sidebar/Sidebar";
@@ -35,7 +36,9 @@ export default function RootLayout({
           <Sidebar />
 
           {/* Main Content Scrollable */}
-          <main className="w-full overflow-auto">{children}</main>
+          <main className="w-full overflow-auto">
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </main>
         </div>
       </body>
     </html>

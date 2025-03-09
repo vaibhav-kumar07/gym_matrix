@@ -1,35 +1,35 @@
 "use client";
 
 import EquipmentStatCard from "./EquipmentStatCard";
-import { useEffect, useState } from "react";
+import SkeletonCard from "@/components/common/SkeletonCard";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchEquipmentStats = async () => {
+  const res = await fetch("http://localhost:3000/owner/bulls/equipment/api");
+  if (!res.ok) throw new Error("Failed to fetch equipment stats");
+  return res.json();
+};
 
 export default function EquipmentStatCardList() {
-  const [stats, setStats] = useState<{ title: string; value: string }[]>([]);
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/owner/bulls/equipment/api"
-        );
-        const rawData = await response.json();
-        setStats(rawData); // Correctly setting state
-      } catch (error) {
-        console.error("Failed to fetch stats:", error);
-      }
-    };
-
-    fetchStats();
-    const interval = setInterval(fetchStats, 10000); // Fetch every second
-
-    return () => clearInterval(interval);
-  }, []);
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ["equipmentStats"],
+    queryFn: fetchEquipmentStats,
+    refetchInterval: 10000,
+  });
 
   return (
-    <div className="grid grid-cols-4 gap-6 mb-8">
-      {stats.map((stat, index) => (
-        <EquipmentStatCard key={index} title={stat.title} value={stat.value} />
-      ))}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {isLoading
+        ? Array(4)
+            .fill(null)
+            .map((_, i) => <SkeletonCard key={i} />)
+        : stats?.map((stat) => (
+            <EquipmentStatCard
+              key={stat.title}
+              title={stat.title}
+              value={stat.value}
+            />
+          ))}
     </div>
   );
 }

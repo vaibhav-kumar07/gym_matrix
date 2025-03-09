@@ -1,39 +1,35 @@
 "use client";
 
 import MemberStatCard from "./MemberStatCard";
-import { useEffect, useState } from "react";
+import SkeletonCard from "@/components/common/SkeletonCard";
+import { useQuery } from "@tanstack/react-query";
 
-export default function MemeberStatCardList() {
-    const [stats, setStats] = useState<{ title: string; value: string }[]>([]);
+const fetchMemberStats = async () => {
+  const res = await fetch("http://localhost:3000/owner/bulls/members/api");
+  if (!res.ok) throw new Error("Failed to fetch member stats");
+  return res.json();
+};
 
-    useEffect(() => {
-        const fetchStats = async () => {
-            try {
-                const response = await fetch(
-                    "http://localhost:3000/owner/bulls/members/api",
-                );
-                const rawData = await response.json();
-                setStats(rawData); // Correctly setting state
-            } catch (error) {
-                console.error("Failed to fetch stats:", error);
-            }
-        };
+export default function MemberStatCardList() {
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ["memberStats"],
+    queryFn: fetchMemberStats,
+    refetchInterval: 10000,
+  });
 
-        fetchStats(); // Initial fetch
-        const interval = setInterval(fetchStats, 10000); // Fetch every second
-
-        return () => clearInterval(interval); // Cleanup on unmount
-    }, []);
-
-    return (
-        <div className="grid grid-cols-4 gap-6 mb-8">
-            {stats.map((stat, index) => (
-                <MemberStatCard
-                    key={index}
-                    title={stat.title}
-                    value={stat.value}
-                />
-            ))}
-        </div>
-    );
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {isLoading
+        ? Array(4)
+            .fill(null)
+            .map((_, i) => <SkeletonCard key={i} />)
+        : stats?.map((stat) => (
+            <MemberStatCard
+              key={stat.title}
+              title={stat.title}
+              value={stat.value}
+            />
+          ))}
+    </div>
+  );
 }
