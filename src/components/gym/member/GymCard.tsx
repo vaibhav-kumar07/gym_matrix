@@ -1,7 +1,6 @@
 import InfoRow from "./MemberGymInog";
 import { GymDialogButton } from "./gymDialog/GymDialogButton";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { IGym } from "@/types/gym";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";

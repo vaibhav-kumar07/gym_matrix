@@ -14,9 +14,8 @@ interface WorkoutsPageProps {
   }>;
 }
 
-export default async function WorkoutsPage({
-  searchParams,
-}: WorkoutsPageProps) {
+export default async function WorkoutsPage(props: WorkoutsPageProps) {
+  const searchParams = await props.searchParams;
   const { filter, duration, intensity, goals, equipment } = await searchParams;
 
   // Fetch workouts with all search params

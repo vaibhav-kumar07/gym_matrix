@@ -1,11 +1,23 @@
-import type { NextConfig } from "next";
+import { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  images: {
-    domains: ["public.readdy.ai","example.com"],
+const config: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store",
+          },
+        ],
+      },
+    ];
   },
-  output: "standalone",
-  distDir: ".next",
+  images: {
+    domains: ["via.placeholder.com", "res.cloudinary.com"],
+  },
+  reactStrictMode: true,
 };
 
-export default nextConfig;
+export default config;

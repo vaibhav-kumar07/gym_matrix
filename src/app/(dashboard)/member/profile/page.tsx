@@ -1,6 +1,9 @@
 import MemberProfile from "@/components/profile/member/MemberProfile";
 import MemberProfilePage from "@/components/profile/member/memberMobile/MemberProfilePage";
 
+// Inside your page component file, e.g., page.tsx
+export const dynamic = "force-dynamic";
+
 export default function page() {
   return (
     <>

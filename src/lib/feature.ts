@@ -96,7 +96,7 @@ const features: Feature[] = [
   },
 ];
 const apiUrl = `${process.env.NEXT_PUBLIC_GYM_URL}`;
-const revalidateTag = "features";
+
 // Function to get filtered features based on role
 export function getPageFeatures(role: "owner" | "member") {
   return features.filter((feature) => feature.roles.includes(role));
@@ -108,7 +108,6 @@ export async function getFeatures(params: IFeatureParams) {
     {
       isWithToken: true,
       isWithCache: false,
-      cacheTags: [revalidateTag],
     }
   );
   return response;

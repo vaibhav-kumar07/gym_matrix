@@ -4,13 +4,11 @@ import * as FetchUtils from "./common/fetch-utils";
 import qs from "query-string";
 
 const apiUrl = `${process.env.NEXT_PUBLIC_GYM_URL}`;
-const revalidateTag = "features";
 
 export async function getGymFeatures(gymId: String) {
   const response = await FetchUtils.get(`${apiUrl}/gymfeatures/${gymId}}`, {
     isWithToken: true,
     isWithCache: false,
-    cacheTags: [revalidateTag],
   });
   return response;
 }

@@ -11,7 +11,8 @@ interface ClassesPageProps {
   }>;
 }
 
-export default async function ClassesPage({ searchParams }: ClassesPageProps) {
+export default async function ClassesPage(props: ClassesPageProps) {
+  const searchParams = await props.searchParams;
   const { filter, search, level } = await searchParams;
   //set default values if not provided
   const defaultFilter = filter === undefined ? "all" : filter;

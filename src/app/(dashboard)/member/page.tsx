@@ -3,6 +3,9 @@ import MemberDashboardDesktop from "@/components/dashboard/member/desktop/Member
 import { getMemberProfile } from "@/lib/memberprofile";
 import { redirect } from "next/navigation";
 
+// Inside your page component file, e.g., page.tsx
+export const dynamic = "force-dynamic";
+
 export default async function MemberMobileDashboard() {
   const result = await getMemberProfile();
   if (result.data == null) redirect("/member/profile");

@@ -4,6 +4,9 @@ import TrainerHeroSection from "@/components/trainer/TrainersHeroSection";
 import { getTrainers } from "@/lib/trainer";
 import { ITrainer, ITrainerParams } from "@/types/trainer";
 
+// Inside your page component file, e.g., page.tsx
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   searchParams: Promise<{
     specialization?: string;
@@ -11,18 +14,18 @@ interface PageProps {
     availability?: string;
     price?: string;
     search?: string;
-  }>
+  }>;
 }
 
 export default async function TrainersPage({ searchParams }: PageProps) {
-  const { specialization, experience, availability,  search } = await searchParams;
+  const { specialization, experience, availability, search } =
+    await searchParams;
   const params: ITrainerParams = {
     specialization,
     experience: experience ? parseInt(experience) : undefined,
     availability,
     isActive: true,
-    search
-   
+    search,
   };
   const result = await getTrainers(params);
 
@@ -30,8 +33,8 @@ export default async function TrainersPage({ searchParams }: PageProps) {
     <div className="min-h-screen bg-[#FAFAFA]">
       <TrainerHeroSection />
       <div className="max-w-7xl mx-auto py-8 px-4">
-        <TrainerFilters/>
-        <TrainerList trainers={result.data}  />
+        <TrainerFilters />
+        <TrainerList trainers={result.data} />
       </div>
     </div>
   );

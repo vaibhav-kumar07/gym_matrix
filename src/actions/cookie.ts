@@ -6,10 +6,6 @@ import {
   hasCookie,
   deleteCookie,
 } from "@/lib/common/cookie-utils";
-import Logger from "@/utils/logger";
-import { revalidateTag } from "next/cache";
-
-const logger = new Logger("actions/cookie.actions");
 
 interface CookieData {
   key: string;
@@ -62,10 +58,4 @@ export async function deleteCookieHandler(key: string) {
       error: "Failed to delete cookie",
     };
   }
-}
-
-// ✅ Server Action to Revalidate Tags (Runs outside render)
-export async function revalidateTags(tags: string[]) {
-  "use server"; // Ensures this runs as a server action
-  tags.forEach((tag) => revalidateTag(tag));
 }

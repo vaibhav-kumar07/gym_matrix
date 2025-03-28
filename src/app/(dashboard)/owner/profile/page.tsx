@@ -4,6 +4,9 @@ import OwnerUpcomingTasksTable from "@/components/profile/owner/OwnerUpcomingTas
 import { getOwnerProfile } from "@/lib/owner";
 import { IOwnerActivity, IOwnerStats, IOwnerTask } from "@/types/owner";
 
+// Inside your page component file, e.g., page.tsx
+export const dynamic = "force-dynamic";
+
 export default async function OwnerProfilePage() {
   const ownerData = await getOwnerProfile();
 
