@@ -51,8 +51,7 @@ export default function RenderAuthButton({
   }
 
   if (authState.token && authState.role) {
-    const dashboardPath =
-      authState.role === "owner" ? "/owner/gym" : "/member/gym";
+    const dashboardPath = authState.role === "owner" ? "/owner/" : "/member/";
 
     return (
       <Link

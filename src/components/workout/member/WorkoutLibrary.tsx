@@ -3,7 +3,7 @@ import { WorkoutFilters } from "./WorkoutFilters";
 import PageHeader from "@/components/common/PageHeader";
 import PageHeaderWithButton from "@/components/common/PageHeaderWithButton";
 import { Button } from "@/components/ui/button";
-import type { Workout, WorkoutFilter } from "@/lib/types/workout";
+import type { Workout, WorkoutFilter } from "@/types/workout";
 import { Settings } from "lucide-react";
 
 interface WorkoutLibraryProps {

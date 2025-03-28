@@ -1,8 +1,8 @@
 import { Label } from "@/components/common/Label";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { IOwnerActivity } from "@/lib/types/owner";
 import { cn } from "@/lib/utils";
+import { IOwnerActivity } from "@/types/owner";
 import {
   UserPlus,
   LineChart,

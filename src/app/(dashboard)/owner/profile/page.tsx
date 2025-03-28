@@ -2,7 +2,7 @@ import OwnerBusinessOverview from "@/components/profile/owner/OwnerBusinessOverv
 import OwnerRecentActivity from "@/components/profile/owner/OwnerRecentActivity";
 import OwnerUpcomingTasksTable from "@/components/profile/owner/OwnerUpcomingTaskTable";
 import { getOwnerProfile } from "@/lib/owner";
-import { IOwnerActivity, IOwnerStats, IOwnerTask } from "@/lib/types/owner";
+import { IOwnerActivity, IOwnerStats, IOwnerTask } from "@/types/owner";
 
 export default async function OwnerProfilePage() {
   const ownerData = await getOwnerProfile();

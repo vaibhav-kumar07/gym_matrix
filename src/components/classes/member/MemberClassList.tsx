@@ -5,7 +5,7 @@ import MemberFilters from "./MemberFilters";
 import PageHeaderWithButton from "@/components/common/PageHeaderWithButton";
 import { Input } from "@/components/ui/input";
 import { classCategories, classLevels } from "@/lib/classes";
-import { FitnessClass } from "@/lib/types/classes";
+import { FitnessClass } from "@/types/classes";
 
 // import { useState } from "react";
 

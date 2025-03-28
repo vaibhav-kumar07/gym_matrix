@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { FitnessClass } from "@/lib/types/classes";
+import { FitnessClass } from "@/types/classes";
 import { Clock, Users, Star, Calendar } from "lucide-react";
 
 interface ClassCardProps {

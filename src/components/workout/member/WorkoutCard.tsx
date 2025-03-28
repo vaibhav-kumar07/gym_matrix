@@ -3,7 +3,7 @@ import { Label } from "@/components/common/Label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Workout } from "@/lib/types/workout";
+import { Workout } from "@/types/workout";
 import { Clock, Signal, Layers, Star, Flame } from "lucide-react";
 import Link from "next/link";
 

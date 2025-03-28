@@ -29,7 +29,7 @@ export default async function middleware(request: NextRequest) {
   if (token || role) {
     if (isAuthRoute) {
       // Redirect based on role (if exists) or default to member
-      const redirectPath = role === "owner" ? "/owner/gym" : "/member/gym";
+      const redirectPath = role === "owner" ? "/owner" : "/member";
       return NextResponse.redirect(new URL(redirectPath, request.url));
     }
   }
@@ -58,12 +58,7 @@ export default async function middleware(request: NextRequest) {
 
     // Redirect to login for protected routes
     if (pathStartsWith("/owner") || pathStartsWith("/member")) {
-      const searchParams = new URLSearchParams({
-        redirect: pathname,
-      });
-      return NextResponse.redirect(
-        new URL(`/auth/login?${searchParams}`, request.url)
-      );
+      return NextResponse.redirect(new URL(`/auth`, request.url));
     }
   }
 

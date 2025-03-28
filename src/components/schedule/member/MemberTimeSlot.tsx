@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ITimeSlot } from "@/lib/types/schedule";
+import { ITimeSlot } from "@/types/schedule";
 import { Clock } from "lucide-react";
 
 interface TimeSlotsProps {

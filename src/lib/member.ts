@@ -1,4 +1,4 @@
-import { IDesktopMemberDashboard, IMemberDashboard } from "./types/member";
+import { IDesktopMemberDashboard, IMemberDashboard } from "../types/member";
 
 export interface IMember {
   id: number;
@@ -260,12 +260,12 @@ export async function getDesktopMemberDashboard(): Promise<IDesktopMemberDashboa
       return mockDesktopDashboardData;
     }
 
-    // In production, make actual API call
-    const response = await fetch("/api/member/dashboard");
-    if (!response.ok) {
-      throw new Error("Failed to fetch dashboard data");
-    }
-    return await response.json();
+    // // In production, make actual API call
+    // const response = await fetch("/api/member/dashboard");
+    // if (!response.ok) {
+    //   throw new Error("Failed to fetch dashboard data");
+    // }
+    // return await response.json();
   } catch (error) {
     console.error("Error fetching dashboard:", error);
     throw error;

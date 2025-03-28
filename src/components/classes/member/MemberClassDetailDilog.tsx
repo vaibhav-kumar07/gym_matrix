@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { FitnessClass } from "@/lib/types/classes";
+import { FitnessClass } from "@/types/classes";
 import { Star, Clock, DollarSign } from "lucide-react";
 
 interface ClassDetailsDialogProps {

@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { FitnessClass } from "@/lib/types/classes";
+import { FitnessClass } from "@/types/classes";
 // import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
 import { useState } from "react";

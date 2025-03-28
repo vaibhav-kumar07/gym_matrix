@@ -1,6 +1,6 @@
 import DesktopSessionPage from "@/components/session/member/DesktopSession";
 import { DesktopFetchSessions } from "@/lib/session";
-import { SessionFilter } from "@/lib/types/session";
+import { SessionFilter } from "@/types/session";
 import React from "react";
 
 type SearchParams = {

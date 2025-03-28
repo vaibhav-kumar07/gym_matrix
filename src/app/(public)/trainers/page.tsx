@@ -1,41 +1,37 @@
-import { TrainersFilter } from "@/components/trainer/TrainerFilter";
-import { TrainersList } from "@/components/trainer/TrainerList";
-import TrainersHero from "@/components/trainer/TrainersHeroSection";
-import { fetchTrainers } from "@/lib/trainer";
-import { Trainer } from "@/lib/types/trainer";
+import TrainerFilters from "@/components/trainer/TrainerFilter";
+import TrainerList from "@/components/trainer/TrainerList";
+import TrainerHeroSection from "@/components/trainer/TrainersHeroSection";
+import { getTrainers } from "@/lib/trainer";
+import { ITrainer, ITrainerParams } from "@/types/trainer";
 
 interface PageProps {
   searchParams: Promise<{
-    level?: string;
+    specialization?: string;
+    experience?: string;
     availability?: string;
     price?: string;
-    popularity?: string;
     search?: string;
-  }>;
+  }>
 }
 
 export default async function TrainersPage({ searchParams }: PageProps) {
-  const { level, availability, price, popularity } = await searchParams;
-  const trainers = await fetchTrainers({
-    level,
+  const { specialization, experience, availability,  search } = await searchParams;
+  const params: ITrainerParams = {
+    specialization,
+    experience: experience ? parseInt(experience) : undefined,
     availability,
-    price,
-    popularity,
-  });
+    isActive: true,
+    search
+   
+  };
+  const result = await getTrainers(params);
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="max-w-[1440px] mx-auto px-8 py-16">
-        <TrainersHero />
-        <TrainersFilter
-          filters={{
-            level: level || "",
-            availability: availability || "",
-            price: price || "",
-            popularity: popularity || "",
-          }}
-        />
-        <TrainersList initialTrainers={trainers as Trainer[]} />
+      <TrainerHeroSection />
+      <div className="max-w-7xl mx-auto py-8 px-4">
+        <TrainerFilters/>
+        <TrainerList trainers={result.data}  />
       </div>
     </div>
   );

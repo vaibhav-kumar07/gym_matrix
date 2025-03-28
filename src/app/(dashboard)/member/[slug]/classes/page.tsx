@@ -1,6 +1,6 @@
 import { MemberClassList } from "@/components/classes/member/MemberClassList";
 import { fetchClasses } from "@/lib/classes";
-import type { ClassFilter } from "@/lib/types/classes";
+import type { ClassFilter } from "@/types/classes";
 
 interface ClassesPageProps {
   searchParams: Promise<{

@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, Smartphone, User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -18,7 +18,6 @@ import * as z from "zod";
 // Validation Schema
 const registerSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
-  gymId: z.string().optional(),
   phone: z.string().regex(/^[0-9]{10}$/, "Phone number must be 10 digits"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
@@ -47,7 +46,6 @@ const RegisterForm = ({ role }: { role: "owner" | "trainer" | "member" }) => {
         // First, register the user
         const registerResult = await registerUserHandler({
           name: data.name,
-          gymId: role !== "owner" ? data.gymId : undefined,
           phone: data.phone,
           password: data.password,
           role,
@@ -96,18 +94,6 @@ const RegisterForm = ({ role }: { role: "owner" | "trainer" | "member" }) => {
             </p>
           )}
         </div>
-
-        {/* Gym Selection (Only for Members & Trainers) */}
-        {role !== "owner" && (
-          <div className="space-y-1">
-            <Label size="sm" variant="semibold">
-              Select Gym
-            </Label>
-            <GymSelectDropdown
-              onSelect={(gymId: any) => setValue("gymId", gymId)}
-            />
-          </div>
-        )}
 
         {/* Phone Number Field */}
         <div className="space-y-1">
@@ -159,7 +145,7 @@ const RegisterForm = ({ role }: { role: "owner" | "trainer" | "member" }) => {
           loading={loading}
           className="rounded-md h-9"
         >
-          {role === "owner" ? "Register Gym" : "Join Gym"}
+          {role === "owner" ? "Register Gym Owner" : "Register Member"}
         </CommonButton>
       </form>
     </CardContent>

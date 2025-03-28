@@ -1,163 +1,116 @@
-"use client";
+'use client';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useGetSearchParamValue, useURLParams } from "../hooks/request";
+import { DayOfWeek } from "@/types/trainer";
+import { useEffect, useState } from "react";
 
-import ClearFilters from "../common/ClearFilter";
-import { useURLParams } from "@/components/hooks/request";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { trainerFilters } from "@/lib/trainer";
-import { Clock, DollarSign, Flame, GraduationCap, X } from "lucide-react";
-import { useState } from "react";
+export default function TrainerFilters() {
+  const { appendSearchParams, removeSearchParams } = useURLParams();
+  const [selectedDay, setSelectedDay] = useState<string>('');
 
-interface TrainersFilterProps {
-  filters: {
-    level: string;
-    availability: string;
-    price: string;
-    popularity: string;
+  const specialization = useGetSearchParamValue("specialization");
+  const experience = useGetSearchParamValue("experience");
+  const availability = useGetSearchParamValue("availability");
+
+  // Convert DayOfWeek to relative day
+  const getRelativeDay = (dayOfWeek: string): string => {
+    const today = new Date();
+    const todayDayOfWeek = today.toLocaleString('en-US', { weekday: 'long' }).toUpperCase();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const tomorrowDayOfWeek = tomorrow.toLocaleString('en-US', { weekday: 'long' }).toUpperCase();
+
+    if (dayOfWeek === todayDayOfWeek) return 'today';
+    if (dayOfWeek === tomorrowDayOfWeek) return 'tomorrow';
+    return 'week';
   };
-}
 
-export function TrainersFilter({ filters }: TrainersFilterProps) {
-  const { appendSearchParams, removeQueryString } = useURLParams();
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  // Sync URL availability with select value
+  useEffect(() => {
+    if (availability) {
+      const relativeDay = getRelativeDay(availability);
+      setSelectedDay(relativeDay);
+    }
+  }, [availability]);
 
-  const handleFilter = (type: string, value: string) => {
-    appendSearchParams(type, value);
-    if (!activeFilters.includes(value)) {
-      setActiveFilters([...activeFilters, value]);
+  const handleAvailabilityChange = (value: string) => {
+    if (value) {
+      const dayOfWeek = getDayOfWeek(value);
+      setSelectedDay(value);
+      appendSearchParams("availability", dayOfWeek);
+    } else {
+      setSelectedDay('');
+      removeSearchParams("availability");
     }
   };
 
-  const removeFilter = (type: string) => {
-    removeQueryString(type);
-    setActiveFilters(
-      activeFilters.filter((f) => f !== filters[type as keyof typeof filters])
-    );
+  // Convert relative day to DayOfWeek
+  const getDayOfWeek = (relativeDay: string): DayOfWeek => {
+    const today = new Date();
+    
+    switch(relativeDay) {
+      case 'today':
+        return DayOfWeek[today.toLocaleString('en-US', { weekday: 'long' }).toUpperCase() as keyof typeof DayOfWeek];
+      case 'tomorrow':
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        return DayOfWeek[tomorrow.toLocaleString('en-US', { weekday: 'long' }).toUpperCase() as keyof typeof DayOfWeek];
+      default:
+        return DayOfWeek[today.toLocaleString('en-US', { weekday: 'long' }).toUpperCase() as keyof typeof DayOfWeek];
+    }
+  };
+
+  const handleSpecializationChange = (value: string) => {
+    if (value) {
+      appendSearchParams("specialization", value);
+    } else {
+      removeSearchParams("specialization");
+    }
+  };
+
+  const handleExperienceChange = (value: string) => {
+    if (value) {
+      appendSearchParams("experience", value);
+    } else {
+      removeSearchParams("experience");
+    }
   };
 
   return (
-    <div className="sticky top-4 z-20  rounded-md  py-4 mb-2">
-      <div className="flex flex-wrap items-center gap-3">
-        {/* Filter Dropdowns */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Level Filter */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <GraduationCap className="w-4 h-4" />
-                Level
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              {trainerFilters.levels.map((level) => (
-                <DropdownMenuItem
-                  key={level.id}
-                  onClick={() => handleFilter("level", level.id)}
-                  className="gap-2"
-                >
-                  {level.icon} {level.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+    <div className="grid grid-cols-4 gap-6 mb-8">
+      <Select value={specialization} onValueChange={handleSpecializationChange}>
+        <SelectTrigger>
+          <SelectValue placeholder="Specialization" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="weight-training">Weight Training</SelectItem>
+          <SelectItem value="yoga">Yoga</SelectItem>
+          <SelectItem value="hiit">HIIT</SelectItem>
+          <SelectItem value="pilates">Pilates</SelectItem>
+        </SelectContent>
+      </Select>
 
-          {/* Availability Filter */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Clock className="w-4 h-4" />
-                Time
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              {trainerFilters.availability.map((time) => (
-                <DropdownMenuItem
-                  key={time.id}
-                  onClick={() => handleFilter("availability", time.id)}
-                  className="gap-2"
-                >
-                  {time.icon} {time.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+      <Select value={experience} onValueChange={handleExperienceChange}>
+        <SelectTrigger>
+          <SelectValue placeholder="Experience Level" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="beginner">Beginner Friendly</SelectItem>
+          <SelectItem value="intermediate">Intermediate</SelectItem>
+          <SelectItem value="advanced">Advanced</SelectItem>
+        </SelectContent>
+      </Select>
 
-          {/* Price Filter */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <DollarSign className="w-4 h-4" />
-                Price
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              {trainerFilters.priceRange.map((price) => (
-                <DropdownMenuItem
-                  key={price.id}
-                  onClick={() => handleFilter("price", price.id)}
-                  className="gap-2"
-                >
-                  {price.icon} {price.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Popularity Filter */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Flame className="w-4 h-4" />
-                Popular
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              {trainerFilters.popularity.map((pop) => (
-                <DropdownMenuItem
-                  key={pop.id}
-                  onClick={() => handleFilter("popularity", pop.id)}
-                  className="gap-2"
-                >
-                  {pop.icon} {pop.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
-        {/* Active Filters Display */}
-        <div className="flex-1 flex flex-wrap items-center gap-2">
-          {Object.entries(filters).map(([type, value]) => {
-            if (!value) return null;
-            const filterConfig = trainerFilters[
-              type as keyof typeof trainerFilters
-            ]?.find((f) => f.id === value);
-            if (!filterConfig) return null;
-
-            return (
-              <Badge
-                key={type}
-                variant="secondary"
-                className="px-3 py-1.5 gap-2 bg-primary/10 text-primary hover:bg-primary/20"
-              >
-                {filterConfig.icon} {filterConfig.name}
-                <X
-                  className="w-3 h-3 cursor-pointer"
-                  onClick={() => removeFilter(type)}
-                />
-              </Badge>
-            );
-          })}
-        </div>
-
-        <ClearFilters title="Clear all" />
-      </div>
+      <Select value={selectedDay} onValueChange={handleAvailabilityChange}>
+        <SelectTrigger>
+          <SelectValue placeholder="Availability" />
+        </SelectTrigger> 
+        <SelectContent>
+          <SelectItem value="today">Available Today</SelectItem>
+          <SelectItem value="tomorrow">Available Tomorrow</SelectItem>
+          <SelectItem value="week">This Week</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   );
 }

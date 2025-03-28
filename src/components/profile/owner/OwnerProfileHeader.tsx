@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { IOwner } from "@/lib/types/owner";
+import { IOwner } from "@/types/owner";
 
 interface OwnerProfileHeaderProps {
   owner: IOwner;

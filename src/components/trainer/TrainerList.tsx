@@ -1,16 +1,21 @@
 import { TrainerCard } from "./TrainerCard";
-import { Trainer } from "@/lib/types/trainer";
+import { ITrainer } from "@/types/trainer";
 
-interface TrainersListProps {
-  initialTrainers: Trainer[];
+interface TrainerListProps {
+  trainers: ITrainer[];
+
 }
 
-export function TrainersList({ initialTrainers }: TrainersListProps) {
+export default function TrainerList ({ trainers }: TrainerListProps)  {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {initialTrainers.map((trainer) => (
-        <TrainerCard key={trainer.id} trainer={trainer} />
+      {trainers.map((trainer) => (
+        <TrainerCard 
+          key={trainer.userId} 
+          trainer={trainer}
+      
+        />
       ))}
     </div>
   );
-}
+};

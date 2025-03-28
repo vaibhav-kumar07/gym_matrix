@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { IClassType } from "@/lib/types/schedule";
+import { IClassType } from "@/types/schedule";
 import { ChevronRight } from "lucide-react";
 
 interface ClassTypesProps {

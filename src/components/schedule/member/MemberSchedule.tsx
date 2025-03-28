@@ -7,7 +7,7 @@ import DateSelection from "./MobileDateSelection";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getScheduleData } from "@/lib/schedule";
-import { IScheduleData } from "@/lib/types/schedule";
+import { IScheduleData } from "@/types/schedule";
 import { MoreVertical } from "lucide-react";
 import React, { useEffect, useState } from "react";
 

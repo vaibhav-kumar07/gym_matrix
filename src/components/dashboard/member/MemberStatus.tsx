@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { IMemberStats } from "@/lib/types/member";
+import { IMemberStats } from "@/types/member";
 import { Crown } from "lucide-react";
 
 interface MembershipStatusProps {

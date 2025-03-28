@@ -2,7 +2,7 @@
 
 import { useURLParams } from "@/components/hooks/request";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { WorkoutFilter } from "@/lib/types/workout";
+import type { WorkoutFilter } from "@/types/workout";
 
 interface WorkoutFiltersProps {
   currentFilter: WorkoutFilter;

@@ -2,8 +2,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { IOwner } from "@/lib/types/owner";
 import { cn } from "@/lib/utils";
+import { IOwner } from "@/types/owner";
 import {
   Mail,
   Phone,

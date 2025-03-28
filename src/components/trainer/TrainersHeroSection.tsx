@@ -1,61 +1,32 @@
-"use client";
-
-import { useURLParams } from "@/components/hooks/request";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CheckCircle, Medal, Search, Shield } from "lucide-react";
 
-export default function TrainersHero() {
-  const { appendSearchParams } = useURLParams();
 
+export default function TrainerHeroSection () {
   return (
-    <div className="relative flex flex-col items-center text-center mb-16">
-      {/* Stats Badge */}
-      <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
-        <span className="text-sm font-medium text-primary">
-          200+ Elite Trainers Available
-        </span>
-      </div>
-
-      {/* Hero Text */}
-      <h1 className="text-5xl font-bold text-gray-900 tracking-tight mb-6">
-        Find Your Perfect Fitness Mentor
-      </h1>
-      <p className="text-gray-600 text-xl max-w-3xl leading-relaxed">
-        Connect with elite personal trainers who will guide you through your
-        fitness journey with expertise and dedication. Transform your life with
-        personalized training.
-      </p>
-
-      {/* Search Bar */}
-      <div className="mt-10 relative w-full max-w-2xl">
-        <Input
-          type="text"
-          placeholder="Search by name, specialization, or location..."
-          className="w-full pl-14 pr-20 h-12 text-base bg-white border border-gray-200 focus:border-gray-900 rounded-full"
-          onChange={(e) => appendSearchParams("search", e.target.value)}
-        />
-        <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-primary w-5 h-5" />
-        <div className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-2 text-sm text-gray-500">
-          <kbd className="px-2 py-1 bg-gray-100 rounded-md">⌘</kbd>
-          <kbd className="px-2 py-1 bg-gray-100 rounded-md">K</kbd>
+    <div className="relative h-[400px] w-full">
+      <img
+        src="https://public.readdy.ai/ai/img_res/3087fba53c9493989f76fce900720728.jpg"
+        alt="Gym Interior"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+        <div className="text-center text-white max-w-3xl px-4">
+          <h1 className="text-5xl font-bold mb-6">Find Your Perfect Fitness Trainer</h1>
+          <p className="text-xl mb-8">Connect with certified professionals who will help you achieve your fitness goals</p>
+          <div className="flex gap-4 justify-center">
+            <Input
+              className="max-w-md bg-white/90 text-black border-none"
+              placeholder="Search by name, specialization, or location"
+              // value={searchQuery}
+              // onChange={(e) => onSearchChange(e.target.value)}
+            />
+            <Button className="!rounded-button whitespace-nowrap bg-blue-600 hover:bg-blue-700">
+              Search Trainers
+            </Button>
+          </div>
         </div>
-      </div>
-
-      {/* Features */}
-      <div className="flex items-center gap-12 mt-8 text-gray-600 bg-white/50 backdrop-blur-sm px-8 py-4 rounded-full border border-gray-100">
-        <span className="flex items-center gap-2">
-          <CheckCircle className="text-primary w-5 h-5" />
-          Verified Trainers
-        </span>
-        <span className="flex items-center gap-2">
-          <Shield className="text-primary w-5 h-5" />
-          Secure Booking
-        </span>
-        <span className="flex items-center gap-2">
-          <Medal className="text-primary w-5 h-5" />
-          Top-Rated Professionals
-        </span>
       </div>
     </div>
   );
-}
+};

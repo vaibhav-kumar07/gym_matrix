@@ -5,7 +5,7 @@ import { ToastProvider } from "@/components/hooks/use-toast";
 import OwnerNavbar from "@/components/navbar/owner/OwnerNavbar";
 import OwnerProfileInfo from "@/components/profile/owner/OwnerProfileInfo";
 import { getOwnerProfile } from "@/lib/owner";
-import { IOwner } from "@/lib/types/owner";
+import { IOwner } from "@/types/owner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

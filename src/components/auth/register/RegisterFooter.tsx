@@ -14,7 +14,7 @@ const RegisterFooter = ({ role }: { role: string }) => (
                     role == "owner" ? "text-blue-600" : "text-purple-600"
                 }`}
             >
-                Login In
+                LoginIn
             </Label>
         </Link>
     </CardFooter>

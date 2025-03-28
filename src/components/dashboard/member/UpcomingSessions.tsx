@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { IUpcomingSession } from "@/lib/types/member";
+import { IUpcomingSession } from "@/types/member";
 
 interface UpcomingSessionsProps {
   sessions: IUpcomingSession[];

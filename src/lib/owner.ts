@@ -1,4 +1,4 @@
-import { IOwner, IOwnerResponse } from "@/lib/types/owner";
+import { IOwner, IOwnerResponse } from "@/types/owner";
 
 export const demoOwnerProfile: IOwner = {
   id: "own_123",

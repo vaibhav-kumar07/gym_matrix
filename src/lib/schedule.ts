@@ -1,4 +1,4 @@
-import { IScheduleData } from "@/lib/types/schedule";
+import { IScheduleData } from "@/types/schedule";
 
 export const demoScheduleData: IScheduleData = {
   timeSlots: [

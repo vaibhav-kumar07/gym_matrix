@@ -2,7 +2,7 @@ import { Label } from "@/components/common/Label";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ITrainer } from "@/lib/types/schedule";
+import { ITrainer } from "@/types/schedule";
 import { Star } from "lucide-react";
 
 interface TrainersProps {

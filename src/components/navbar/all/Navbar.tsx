@@ -22,8 +22,9 @@ const Navbar = () => {
           </Link>
         ))}
       </nav>
-
-      <RenderAuthButton className="ml-auto" />
+      <div className="ml-auto">
+        <RenderAuthButton className="ml-auto" />
+      </div>
     </div>
   );
 };

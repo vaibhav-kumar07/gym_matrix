@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { FitnessSession } from "@/lib/types/session";
+import { FitnessSession } from "@/types/session";
 import { format } from "date-fns";
 
 interface SessionDetailsDialogProps {

@@ -1,135 +1,256 @@
-import { Trainer, TrainerFilter } from "@/lib/types/trainer";
+import { TrainerBasicData } from "@/components/trainer/validation/trainer";
+import { ILibApiResponse, QueryParameters } from "../types/common";
+import { ICertification, IEducation, ITrainer, ITrainerParams, ITrainerProfileStatus } from "../types/trainer";
+import * as FetchUtils from "@/lib/common/fetch-utils";
+import qs from "query-string";
 
-export const trainers = [
-  {
-    id: "tr-002",
-    name: "Mike Chen",
-    level: "intermediate",
-    specialization: "HIIT Training",
-    experience: "5+ years",
-    availability: "evening",
-    popularity: "featured",
-    priceRange: "standard", // standard: $50-80/hr
-    hourlyRate: 65,
-    rating: 4.7,
-    reviews: 98,
-    clientCount: 38,
-    gym: "Independent",
-    certifications: ["ACE CPT", "TRX Certified"],
-    avatar: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5",
-    coverImage: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e",
-  },
-  {
-    id: "tr-003",
-    name: "Emma Rodriguez",
-    level: "beginner",
-    specialization: "Yoga & Pilates",
-    experience: "3+ years",
-    availability: "flexible",
-    popularity: "new",
-    priceRange: "budget", // budget: <$50/hr
-    hourlyRate: 45,
-    rating: 4.8,
-    reviews: 45,
-    clientCount: 25,
-    gym: "Zen Studio",
-    certifications: ["RYT 200", "Pilates Certified"],
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
-    coverImage: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0",
-  },
-  {
-    id: "tr-001",
-    name: "Sarah Johnson",
-    level: "expert",
-    specialization: "Strength & Conditioning",
-    experience: "8+ years",
-    availability: "morning",
-    popularity: "trending",
-    priceRange: "premium",
-    hourlyRate: 85,
-    rating: 4.9,
-    reviews: 156,
-    clientCount: 45,
-    gym: "Elite Fitness Center",
-    certifications: ["NASM CPT", "CrossFit L2"],
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
-    coverImage: "https://images.unsplash.com/photo-1534258936925-c58bed479fcb",
-    bio: "Certified strength coach with 8+ years experience helping clients achieve their fitness goals",
-    transformations: 120, // Add this field
-  },
-];
+const apiUrl = `${process.env.NEXT_PUBLIC_AUTH_URL}`;
+const trainerTag = "trainers";
 
-// Filter Options
-export const trainerFilters = {
-  levels: [
-    { id: "beginner", name: "Beginner Friendly", icon: "🌱" },
-    { id: "intermediate", name: "Intermediate", icon: "⭐" },
-    { id: "expert", name: "Expert", icon: "🏆" },
-  ],
-  availability: [
-    { id: "morning", name: "Morning", icon: "🌅" },
-    { id: "evening", name: "Evening", icon: "🌙" },
-    { id: "flexible", name: "Flexible", icon: "📅" },
-  ],
-  priceRange: [
-    { id: "budget", name: "Budget (<$50/hr)", icon: "💰" },
-    { id: "standard", name: "Standard ($50-80/hr)", icon: "💰💰" },
-    { id: "premium", name: "Premium (>$80/hr)", icon: "💰💰💰" },
-  ],
-  popularity: [
-    { id: "trending", name: "Trending", icon: "🔥" },
-    { id: "featured", name: "Featured", icon: "⭐" },
-    { id: "new", name: "New Trainers", icon: "✨" },
-  ],
-};
+export async function getTrainers(
+  params: ITrainerParams
+): Promise<ILibApiResponse<ITrainer[]>> {
+  // console.log("params", params);
+  const response = await FetchUtils.get(
+    `${apiUrl}/trainers?${buildQueryString(params)}`,
+    {
+      isWithToken: false,
+      isWithCache: true,
+      cacheTags: [trainerTag],
+    }
+  );
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+  // console.log("response", response);
 
-export interface FetchTrainersOptions {
-  filter?: TrainerFilter;
-  searchQuery?: string;
-  minRating?: number;
-  maxPrice?: number;
+  return {
+    status: response.status,
+    data: response.data as ITrainer[],
+    meta: response.meta,
+    error: response.error,
+  };
 }
 
-export async function fetchTrainers(filters: {
-  level?: string;
-  availability?: string;
-  price?: string;
-  popularity?: string;
+export async function getTrainerById(id: string) {
+  const response = await FetchUtils.get(`${apiUrl}/trainers/${id}`, {
+    isWithToken: false,
+    isWithCache: true,
+    cacheTags: [trainerTag],
+  });
+  return response;
+}
+
+export async function createTrainer(payload: Partial<TrainerBasicData>) {
+  const response = await FetchUtils.post(`${apiUrl}/trainers`, payload, {
+    isWithToken: true,
+    isWithCache: false,
+    cacheTags: [trainerTag],
+  });
+  console.log("response", response);
+  return response;
+}
+
+export async function updateTrainerBasicDetails(id: string, payload: Partial<TrainerBasicData>) {
+  const response = await FetchUtils.patch(`${apiUrl}/trainers/${id}`, payload, {
+    isWithToken: true,
+    isWithCache: false,
+    cacheTags: [trainerTag],
+  });
+  return response;
+}
+
+export async function updateTrainerStatus(id: string, status: ITrainerProfileStatus) {
+  const response = await FetchUtils.patch(
+    `${apiUrl}/trainers/${id}/status`,
+    { status },
+    {
+      isWithToken: true,
+      isWithCache: false,
+      cacheTags: [trainerTag],
+    }
+  );
+  return response;
+}
+
+export async function deleteTrainer(id: string) {
+  const response = await FetchUtils.deleteData(`${apiUrl}/trainers/${id}`, {
+    isWithToken: true,
+    isWithCache: false,
+    cacheTags: [trainerTag],
+  });
+  return response;
+}
+
+export async function uploadTrainerMedia(id: string, formData: FormData) {
+  const response = await FetchUtils.post(
+    `${apiUrl}/trainers/${id}/media`,
+    formData,
+    {
+      isWithToken: true,
+      isWithCache: false,
+      cacheTags: [trainerTag],
+    }
+  );
+  return response;
+}
+
+export async function getTrainerAvailability(trainerId: string, date: string) {
+  const response = await FetchUtils.get(
+    `${apiUrl}/trainers/${trainerId}/availability?date=${date}`,
+    {
+      isWithToken: true,
+      isWithCache: true,
+      cacheTags: [trainerTag],
+    }
+  );
+  return response;
+}
+
+export async function updateTrainerAvailability(
+  trainerId: string,
+  availability: ITrainer["availability"]
+) {
+  const response = await FetchUtils.put(
+    `${apiUrl}/trainers/${trainerId}/availability`,
+    { availability },
+    {
+      isWithToken: true,
+      isWithCache: false,
+      cacheTags: [trainerTag],
+    }
+  );
+  return response;
+}
+export async function updateTrainerCertifications(
+  trainerId: string, 
+  certifications: ICertification[]
+) {
+
+    return await FetchUtils.patch(
+      `${apiUrl}/trainers/${trainerId}/certifications`,
+      { certifications },
+      {
+        isWithToken: true,
+        isWithCache: false,
+        cacheTags: [trainerTag],
+      }
+    );   
+}
+
+export async function updateTrainerSpecializations(
+  trainerId: string, 
+  specializations: string[]
+) {
+
+    return await FetchUtils.patch(
+      `${apiUrl}/trainers/${trainerId}/specializations`,
+      { specializations },
+      {
+        isWithToken: true,
+        isWithCache: false,
+        cacheTags: [trainerTag],
+      }
+    );   
+}
+
+export async function updateTrainerEducations({trainerId, education, experienceWithDemographics, achievements
+}:{
+  trainerId: string, 
+  education?: IEducation[],
+  experienceWithDemographics?:
+    {
+      seniors:boolean  ,
+      kids: boolean,
+      disabilities:boolean
+  },
+  achievements?:string[]
 }) {
-  await delay(1000); // Simulate network delay
 
-  let filteredTrainers = [...trainers] as Trainer[];
+    return await FetchUtils.patch(
+      `${apiUrl}/trainers/${trainerId}/details`,
+      { education, experienceWithDemographics, achievements },
+      {
+        isWithToken: true,
+        isWithCache: false,
+        cacheTags: [trainerTag],
+      }
+    );   
+}
 
-  if (filters.level) {
-    filteredTrainers = filteredTrainers.filter(
-      (trainer) => trainer.level.toLowerCase() == filters.level.toLowerCase()
-    );
+
+export async function updateTrainerLanguages(
+  trainerId: string, 
+  languages: string[]
+) {
+  return await FetchUtils.patch(
+    `${apiUrl}/trainers/${trainerId}`,
+    { languages },
+    {
+      isWithToken: true,
+      isWithCache: false,
+      cacheTags: [trainerTag],
+    }
+  );   
+}
+
+const buildQueryString = (params: ITrainerParams) => {
+  const queryParams: QueryParameters = {};
+  if (params?.search?.trim()) queryParams["searchText"] = params.search.trim();
+  if (params?.specialization)
+    queryParams["filters[specializations][$in]"] = params.specialization;
+  if (params?.experience)
+    queryParams["filters[yearsOfExperience][$gte]"] =
+      params.experience.toString();
+  if (params?.availability)
+    queryParams["filters[availability.dayOfWeek][$eq]"] = params.availability;
+  if (params?.isActive !== undefined)
+    queryParams["filters[status][$eq]"] = params.isActive
+      ? ITrainerProfileStatus.ACTIVE
+      : ITrainerProfileStatus.INACTIVE;
+  if (params?.gymId) queryParams["filters[userId][$eq]"] = params.gymId;
+  if (params?.startDate) {
+    const endDate = params.endDate || params.startDate;
+    queryParams[
+      "filters[createdAt][$between]"
+    ] = `dt${params.startDate},${endDate}`;
   }
 
-  if (filters.availability) {
-    filteredTrainers = filteredTrainers.filter(
-      (trainer) =>
-        trainer.availability.toLowerCase() == filters.availability.toLowerCase()
-    );
-  }
+  return qs.stringify(queryParams, {
+    arrayFormat: "comma",
+    skipNull: true,
+    skipEmptyString: true,
+    encode: false,
+  });
+};
 
-  if (filters.price) {
-    filteredTrainers = filteredTrainers.filter(
-      (trainer) =>
-        trainer.priceRange.toLowerCase() == filters.price.toLowerCase()
-    );
-  }
+// Additional utility functions
+export async function addTrainerCertification(
+  trainerId: string,
+  certification: ITrainer["certifications"][0]
+) {
+  const response = await FetchUtils.post(
+    `${apiUrl}/trainers/${trainerId}/certifications`,
+    certification,
+    {
+      isWithToken: true,
+      isWithCache: false,
+      cacheTags: [trainerTag],
+    }
+  );
+  return response;
+}
 
-  if (filters.popularity) {
-    filteredTrainers = filteredTrainers.filter(
-      (trainer) =>
-        trainer.popularity.toLowerCase() == filters.popularity.toLowerCase()
-    );
-  }
-
-  const uniqueTrainers = new Set(filteredTrainers);
-
-  return Array.from(uniqueTrainers);
+export async function updateTrainerReviews(
+  trainerId: string,
+  review: ITrainer["clientReviews"][0]
+) {
+  const response = await FetchUtils.post(
+    `${apiUrl}/trainers/${trainerId}/reviews`,
+    review,
+    {
+      isWithToken: true,
+      isWithCache: false,
+      cacheTags: [trainerTag],
+    }
+  );
+  return response;
 }

@@ -1,7 +1,7 @@
 import { WorkoutLibrary } from "@/components/workout/member/WorkoutLibrary";
 import { WorkoutsSkeleton } from "@/components/workout/member/WorkoutSkeleton";
-import type { WorkoutFilter } from "@/lib/types/workout";
 import { fetchWorkouts } from "@/lib/workout";
+import type { WorkoutFilter } from "@/types/workout";
 import { Suspense } from "react";
 
 interface WorkoutsPageProps {

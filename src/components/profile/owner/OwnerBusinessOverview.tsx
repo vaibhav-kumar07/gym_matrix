@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
-import { IOwner } from "@/lib/types/owner";
 import { cn } from "@/lib/utils";
+import { IOwner } from "@/types/owner";
 import { TrendingUp, Users, UserCog } from "lucide-react";
 
 interface OwnerBusinessOverviewProps {

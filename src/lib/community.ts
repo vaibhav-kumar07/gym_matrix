@@ -1,4 +1,4 @@
-import { ICommunityData } from "../lib/types/community";
+import { ICommunityData } from "../types/community";
 
 export const demoCommunityData: ICommunityData = {
   trendingTopics: [

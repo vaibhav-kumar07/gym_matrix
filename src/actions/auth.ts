@@ -14,19 +14,17 @@ export async function registerUserHandler(payload: {
   phone: string;
   password: string;
   role: string;
-  gymId?: string;
 }): Promise<apiResponse> {
   const result = await registerUser(payload);
-  console.log(result);
-  //   if (result.status) {
-  //     await setCookie("token", result.data.token);
-  //   }
-  //for now ,send a sucess response
+  console.log("result", result);
+  if (result.status) {
+    await setCookie("token", result.data.token);
+  }
+
   return {
-    status: true,
-    data: {
-      phone: payload.phone,
-    },
+    status: result.status,
+    data: result?.data,
+    error: result.error,
   };
 }
 
@@ -36,18 +34,15 @@ export async function loginUserHandler(payload: {
 }): Promise<apiResponse> {
   const result = await loginUser(payload);
   console.log("result", result.status);
-  //   if (result.status) {
-  //     await setCookie("token", result.data.token);
-  //   }
-  //same in this case also
+  if (result.status) {
+    await setCookie("token", result.data.token);
+  }
 
   return {
-    status: true,
-    data: {
-      phone: payload.phone,
-    },
+    status: result.status,
+    data: result?.data,
+    error: result.error,
   };
-  //   return result;
 }
 
 export async function setDeviceIdHandler(deviceId: string) {
@@ -72,7 +67,6 @@ export async function handleAuthSuccess(phone: string): Promise<AuthResult> {
   try {
     // Get the user's role from cookie
     const userRole = await getCookieValue("role");
-
     if (!userRole) {
       return {
         success: false,
@@ -82,7 +76,7 @@ export async function handleAuthSuccess(phone: string): Promise<AuthResult> {
     }
 
     // Set authentication token
-    await setCookie("token", "true");
+    // await setCookie("token", "true");
     await setCookie("phone", phone);
 
     // Determine redirect path based on role

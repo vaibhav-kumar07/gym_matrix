@@ -1,5 +1,5 @@
-import { FitnessSession } from "../lib/types/session";
-import { SessionFilter } from "../lib/types/session";
+import { FitnessSession } from "../types/session";
+import { SessionFilter } from "../types/session";
 
 export const mockSessions: FitnessSession[] = [
   {

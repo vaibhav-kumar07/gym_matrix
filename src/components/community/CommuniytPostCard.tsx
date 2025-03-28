@@ -2,7 +2,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { IPost } from "@/lib/types/community";
+import { IPost } from "@/types/community";
 import { Heart, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
 
 interface PostCardProps {

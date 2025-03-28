@@ -8,7 +8,7 @@ import CummunityTrendingTopics from "@/components/community/CummunityTrendingTop
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getCommunityData } from "@/lib/community";
-import { ICommunityData } from "@/lib/types/community";
+import { ICommunityData } from "@/types/community";
 import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 

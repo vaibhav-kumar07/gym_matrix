@@ -2,7 +2,7 @@
 
 import { useURLParams } from "@/components/hooks/request";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SessionFilter } from "@/lib/types/session";
+import { SessionFilter } from "@/types/session";
 
 interface SessionFiltersProps {
   activeFilter: SessionFilter;

@@ -40,7 +40,6 @@ const LoginFormContent = ({ role }: { role: string }) => {
             password: data.password,
         });
         setLoading(false);
-
         if (result.status) {
             successToast("User Logged In Successfully");
             const redirectPath =

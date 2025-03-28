@@ -1,138 +1,105 @@
-"use client";
-
-import { Label } from "../common/Label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Trainer } from "@/lib/types/trainer";
-import { Clock, MapPin, Star, Users } from "lucide-react";
-
+import { DayOfWeek, ITrainer } from "@/types/trainer";
+import { Star, MapPin, Clock } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 interface TrainerCardProps {
-  trainer: Trainer;
+  trainer: ITrainer;
+  // onViewProfile?: (trainerId: string) => void;
 }
 
-export function TrainerCard({ trainer }: TrainerCardProps) {
+export const TrainerCard = ({ trainer }: TrainerCardProps) => {
+  // Calculate average rating
+  const averageRating = trainer.clientReviews.reduce((acc, review) => acc + review.rating, 0) / 
+    (trainer.clientReviews.length || 1);
+
+  // Get today's availability
+  const today =DayOfWeek.MONDAY
+  const todaySchedule = trainer.availability.find(a => a.dayOfWeek == today);
+  const availabilityText = todaySchedule?.status === "Available" 
+    ? `Available ${todaySchedule.startTime} - ${todaySchedule.endTime}`
+    : "Not Available Today";
+
   return (
-    <Card className="group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white rounded-2xl">
-      {/* Cover Image Section */}
-      <div className="relative h-52">
-        <img
-          src={trainer.coverImage}
-          alt={trainer.name}
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow border rounded-lg">
+      <div className="relative h-56px">
+    
+          <div className="relative h-52 w-full bg-green-300">
+        {trainer?.media && trainer?.media.gallery ? (
+          <Image
+          src={"https://public.readdy.ai/ai/img_res/867d17b926fa03492c1135c6166a3f63.jpg"} // Display first image
+          alt={trainer.media.profilePicture}
+          layout="fill"
+          objectFit="cover"
+          className="transition-transform duration-500 hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-
-        {/* Price Badge */}
-        <Badge className="absolute top-4 right-4 bg-white/95 text-gray-900 backdrop-blur-sm shadow-sm border-0 px-3 py-1.5">
-          ${trainer.hourlyRate}/hr
-        </Badge>
-
-        {/* Avatar and Name Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end gap-3">
-          <Avatar className="h-14 w-14 border-2 border-white shadow-xl">
-            <AvatarImage
-              src={trainer.avatar}
-              alt={trainer.name}
-              className="object-cover"
-            />
-            <AvatarFallback className="bg-primary/10">
-              {trainer.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1">
-            <h3 className="text-xl font-semibold text-white mb-1">
-              {trainer.name}
-            </h3>
-            <p className="text-white/90 text-sm">{trainer.specialization}</p>
+        ) : (
+          <div className="h-full w-full flex items-center justify-center bg-gray-200 text-gray-500">
+            No Image Available
           </div>
-        </div>
+        )}
       </div>
-
-      {/* Card Content */}
-      <div className="p-5 space-y-4">
-        {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-2 py-2">
-          <div className="text-center">
-            <div className="flex items-center justify-center text-yellow-500 mb-1">
-              <Star className="w-4 h-4 fill-current" />
-              <span className="font-semibold ml-1">{trainer.rating}</span>
-            </div>
-            <Label size="sm" className="text-gray-500">
-              {trainer.reviews} reviews
-            </Label>
-          </div>
-          <div className="text-center border-x">
-            <div className="flex items-center justify-center text-primary mb-1">
-              <Users className="w-4 h-4" />
-              <span className="font-semibold ml-1">{trainer.clientCount}+</span>
-            </div>
-            <Label size="sm" className="text-gray-500">
-              Clients
-            </Label>
-          </div>
-          <div className="text-center">
-            <div className="flex items-center justify-center text-primary mb-1">
-              <Clock className="w-4 h-4" />
-              <span className="font-semibold ml-1">
-                {trainer.transformations}+
-              </span>
-            </div>
-            <Label size="sm" className="text-gray-500">
-              Results
-            </Label>
-          </div>
-        </div>
-
-        {/* Location & Experience */}
-        <div className="flex items-center justify-between text-sm px-1">
-          <div className="flex items-center text-gray-600">
-            <MapPin className="w-4 h-4 mr-1" />
-            {trainer.gym}
-          </div>
-          <Badge
-            variant="secondary"
-            className="bg-primary/10 text-primary border-0"
-          >
-            {trainer.experience}
+        <div className="absolute top-4 right-4">
+          <Badge className={`${
+            todaySchedule?.status === "Available" ? "bg-green-500" : "bg-gray-500"
+          }`}>
+            {availabilityText}
           </Badge>
         </div>
+      </div>
+      <div className="w-full p-6">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3 className="text-xl font-semibold">{trainer.name}</h3>
+            <p className="text-gray-600">{trainer.professionalTitle}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xl font-bold">${trainer.hourlyRateBreakdown?.oneOnOneRate}</p>
+            <p className="text-sm text-gray-500">per hour</p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-2 mb-4">
+          <Star className="w-5 h-5 text-yellow-400 fill-current" />
+          <span className="font-semibold">{averageRating.toFixed(1)}</span>
+          <span className="text-gray-500">({trainer.clientReviews.length} reviews)</span>
+        </div>
 
-        {/* Certifications */}
-        <div className="flex flex-wrap gap-2">
-          {trainer.certifications.slice(0, 2).map((cert) => (
-            <Badge
-              key={cert}
-              variant="secondary"
-              className="bg-gray-100 text-gray-700 hover:bg-gray-200"
-            >
-              {cert}
+        <div className="flex items-center gap-2 mb-4">
+          <MapPin className="w-5 h-5 text-gray-400" />
+          <span className="text-gray-600">{trainer.location}</span>
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-6">
+          {trainer.specializations.slice(0, 3).map((specialization, index) => (
+            <Badge key={index} variant="secondary">
+              {specialization}
             </Badge>
           ))}
-          {trainer.certifications.length > 2 && (
-            <Badge variant="secondary" className="bg-gray-100 text-gray-700">
-              +{trainer.certifications.length - 2} more
-            </Badge>
+          {trainer.specializations.length > 3 && (
+            <Badge variant="secondary">+{trainer.specializations.length - 3}</Badge>
           )}
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-3 pt-2">
-          <Button
-            variant="outline"
-            className="flex-1 rounded-full hover:bg-gray-50"
-          >
-            View Profile
-          </Button>
-          <Button className="flex-1 rounded-full bg-primary hover:bg-primary/90">
-            Book Session
-          </Button>
+        <div className="flex flex-wrap gap-2 mb-6">
+          <Badge variant="outline">{trainer.yearsOfExperience}+ Years</Badge>
+          {trainer.certifications.slice(0, 2).map((cert, index) => (
+            <Badge key={index} variant="outline">
+              {cert.name}
+            </Badge>
+          ))}
         </div>
+
+        <Link 
+        href={`/trainers/${trainer._id}`}
+          className="w-full  flex justify-center bg-black text-white py-2 px-4 text-center rounded-lg"
+          // onClick={() => onViewProfile?.(trainer.userId)}
+        >
+          View Profile
+        </Link>
       </div>
     </Card>
   );
-}
+};

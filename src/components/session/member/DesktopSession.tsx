@@ -4,7 +4,7 @@ import { SessionFilters } from "./DesktopSessionFilter";
 import SessionsSkeleton from "./SessionSkeleton";
 import { errorToast, successToast } from "@/components/hooks/use-toast";
 import { DesktopFetchSessions, DesktopBookSession } from "@/lib/session";
-import { FitnessSession, SessionFilter } from "@/lib/types/session";
+import { FitnessSession, SessionFilter } from "@/types/session";
 
 // import { useState, useEffect } from "react";
 

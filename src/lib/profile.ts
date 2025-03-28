@@ -1,4 +1,4 @@
-import { IUserProfile } from "./types/profile";
+import { IUserProfile } from "../types/profile";
 
 export const getUserProfile = () => {
   const userProfile = {

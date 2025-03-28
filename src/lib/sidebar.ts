@@ -67,7 +67,7 @@ export const desktopSidebarLinkMember = [
     label: "My Plan",
     tab: "membership",
     category: "Membership",
-    path: "/member/bull_gym/membership",
+    path: "/member/myplan",
   },
   {
     icon: "receipt",

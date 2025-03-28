@@ -1,4 +1,4 @@
-import { Workout, WorkoutFilter } from "@/lib/types/workout";
+import { Workout, WorkoutFilter } from "@/types/workout";
 
 export const mockWorkouts: Workout[] = [
   {

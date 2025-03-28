@@ -1,4 +1,4 @@
-import { FitnessClass, Instructor } from "../lib/types/classes";
+import { FitnessClass, Instructor } from "../types/classes";
 
 export interface IClass {
   id: number;

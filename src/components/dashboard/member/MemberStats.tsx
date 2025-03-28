@@ -1,7 +1,7 @@
 import { Label } from "@/components/common/Label";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { IMemberStats } from "@/lib/types/member";
+import { IMemberStats } from "@/types/member";
 import { Flame } from "lucide-react";
 
 interface MemberStatsProps {
